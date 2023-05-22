@@ -1,4 +1,5 @@
 import React from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import styles from "@/styles/login.module.css";
 import Grid from "@mui/material/Grid";
@@ -8,6 +9,7 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 
 export default function Login() {
+  const { data: session } = useSession();
   const [userName, serUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checkRememberMe, setCheckRememberMe] = React.useState(false);
@@ -23,6 +25,8 @@ export default function Login() {
     });
     if (userName !== "" && password !== "") {
       console.log("success", checkRememberMe);
+      signIn("credentials", { username: userName, password: password });
+      console.log(session);
     }
   };
   return (
