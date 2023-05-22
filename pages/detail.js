@@ -1,17 +1,21 @@
-import styles from "@/styles/Home.module.css";
 import React from "react";
-import Image from "next/image";
+import styles from "@/styles/detail.module.css";
 import Grid from "@mui/material/Grid";
-import Carousel from "react-material-ui-carousel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
-import Card from "@mui/material/Card";
-export default function Home() {
-  const [filter, setFilter] = React.useState(0);
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
+export default function Detail() {
+  const [quality, setQuality] = React.useState(0);
+  const testproduct = {
+    productId: 0,
+    image: "/image/product/product-image.png",
+    imageMobile: "/image/product/product-image (8).png",
+    productName: "Men's Plain Derby Semi Casual Shoes",
+    categories: "Men's Plain Derby Semi Casual Shoes",
+    price: "6,400.00",
+    detail:
+      "More than perhaps any other silhouette, the Air More Uptempo encapsulates '90s basketball flavour at its finest. Big and loud, the unapologetic design represents a hybrid of style and innovation that made major waves when it debuted—and still turns heads today. This crafted take keeps it simple and easy to style in classic black and white, while pops of blue add a breath of fresh air. Speaking of air, the graffiti-style AIR graphic (an off-court fave) extends down the midsole for extra punch. Visible Nike Air cushioning finishes it off, giving you the edge in comfort.",
+  };
   const product = [
     {
       productId: 0,
@@ -95,7 +99,7 @@ export default function Home() {
     },
   ];
   return (
-    <div id={styles.homepage}>
+    <div id={styles.detail}>
       <Grid container spacing={2} rowSpacing={6}>
         <Grid item xs={12} md={12}>
           <div className={styles.div1}>
@@ -106,63 +110,73 @@ export default function Home() {
             </div>
           </div>
         </Grid>
-        <div className={styles.parent}>
-          <Carousel
-            style={{
-              textAlign: "center",
-              maxWidth: "984px",
-              maxHeight: "431px",
-            }}
-            className={styles.banner}
-          >
-            {[1, 2, 3, 4].map((item, i) => (
-              <div className={styles.imageBanner} key={i} />
-            ))}
-          </Carousel>
-          <div className={styles.detail}>
-            <p>NEW ARRIVALS</p>
-            <div className={styles.filters}>
-              <p>Sort by</p>
-              <Select
-                value={filter}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-                onChange={(event) => {
-                  setFilter(event.target.value);
-                }}
-              >
-                <MenuItem value={0}>Price : High - Low</MenuItem>
-              </Select>
-            </div>
-            <Grid container spacing={4} rowSpacing={4}>
-              {product.map((e) => (
-                <Grid item xs={6} md={3} key={e.productId}>
-                  <Card>
-                    <CardActionArea>
-                      <img
-                        src={e.image}
-                        alt={e.image}
-                        className={styles.imageProduct}
-                      />
-                      <img
-                        src={e.imageMobile}
-                        alt={e.imageMobile}
-                        className={styles.imageProductMobile}
-                      />
-                      <CardContent>
-                        <div className={styles.detailCard}>
-                          <p>{e.categories}</p>
-                          <a>฿ {e.price}</a>
-                        </div>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
+        <Grid item xs={12} md={12}>
+          <div className={styles.parent}>
+            <div className={styles.detail}>
+              <Grid container spacing={4} rowSpacing={4}>
+                <Grid item xs={12} md={12}>
+                  <div className={styles.breadcrumbs}>
+                    <p>Home {">"} </p>
+                    <a>product</a>
+                  </div>
                 </Grid>
-              ))}
-            </Grid>
+                <Grid item xs={12} md={6}>
+                  <img
+                    src={testproduct.image}
+                    alt={testproduct.image}
+                    className={styles.imageProduct}
+                  />
+                  <img
+                    src={testproduct.imageMobile}
+                    alt={testproduct.imageMobile}
+                    className={styles.imageProductMobile}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <div className={styles.detailList}>
+                    <div className={styles.header}>
+                      {testproduct.productName}
+                    </div>
+                    <div className={styles.price}>${testproduct.price}</div>
+                    <div className={styles.detailProduct}>
+                      {testproduct.detail}
+                    </div>
+                    <div className={styles.quality}>
+                      Quantity
+                      <div className={styles.buttonGroup}>
+                        {/* <ColorButton variant="contained">Custom CSS</ColorButton> */}
+                        <Button variant="outlined" disabled={quality === 0} onClick={(e) => setQuality(quality - 1)} >
+                          -
+                        </Button>
+                        <TextField
+                          type="number"
+                          value={quality}
+                          sx={{ width: '70px', textAlign: 'center' }}
+                          disabled
+                        />
+                        <Button
+                          variant="outlined"
+                          onClick={(e) => setQuality(quality + 1)}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+                    <div className={styles.button}>
+                      <Button
+                        variant="contained"
+                        className="stanDard"
+                        //   onClick={onSubmit}
+                      >
+                        Add to cart
+                      </Button>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            </div>
           </div>
-        </div>
-
+        </Grid>
         <Grid item xs={12} md={12}>
           <div className={styles.div3}>
             <p className={styles.footer}>Copyright 2023 Online Shop</p>
