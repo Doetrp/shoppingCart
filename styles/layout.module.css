@@ -1,0 +1,73 @@
+#layout {
+  background: #ffffff;
+  position: relative;
+  .div1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px;
+    gap: 10px;
+    height: 70px;
+    background: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06);
+    width: 100%;
+  }
+  .div3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    gap: 10px;
+    height: 50px;
+    right: 0px;
+    background: #f2f2f2;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    .footer {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 31px;
+      color: #595959;
+      margin: 10px;
+    }
+  }
+  .logo {
+    width: 122px;
+    height: 40px;
+    background: url(../public/icon/logo\ 2.png);
+  }
+  .iconGroup {
+    display: flex;
+    display: flex;
+    position: absolute;
+    right: 0px;
+    gap: 15px;
+    padding: 10px;
+    .personIcon {
+      width: 16px;
+      height: 16px;
+      background: url(../public/icon/person.png);
+      cursor: pointer;
+    }
+    .shopingCardIcon {
+      width: 21px;
+      height: 16px;
+      background-image: url(../public/icon/shopping_cart.png);
+      cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #layout {
+    .div1 {
+      justify-content: space-between !important;
+    }
+  }
+}

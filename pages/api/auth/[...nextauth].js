@@ -14,10 +14,9 @@ export const authOptions = {
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
         });
-        const user = await res.json();
-
-        if (res.ok && user) {
-          return user;
+        const data = await res.json();
+        if (res.status === "ok") {
+          return data.user;
         }
         return null;
       },
@@ -37,13 +36,24 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       return session;
     },
+    async signIn({ user, account, profile, email, credentials }) {
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        // Return false to display a default error message
+        return false;
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    },
   },
   pages: {
-    // signIn: "/login",
-    // signOut: "/auth/signout",
-    // error: "/auth/error", // Error code passed in query string as ?error=
-    // verifyRequest: "/auth/verify-request", // (used for check email message)
-    // newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+    signIn: "/login",
+    signOut: "/auth/signout",
+    error: "/auth/error", // Error code passed in query string as ?error=
+    verifyRequest: "/auth/verify-request", // (used for check email message)
+    newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 };
 export default NextAuth(authOptions);

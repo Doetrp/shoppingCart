@@ -1,9 +1,8 @@
 import styles from "@/styles/Home.module.css";
+import Layout from "@/components/Layouts/layout.js";
 import React from "react";
-// import { useSession } from "next-auth/react";
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react";
 
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 
 import Grid from "@mui/material/Grid";
@@ -15,7 +14,7 @@ import { CardActionArea } from "@mui/material";
 import Card from "@mui/material/Card";
 export default function Home() {
   const { data: session, status } = useSession();
-  let router = useRouter();
+  const router = useRouter();
   const [filter, setFilter] = React.useState(0);
   const product = [
     {
@@ -99,27 +98,14 @@ export default function Home() {
         "More than perhaps any other silhouette, the Air More Uptempo encapsulates '90s basketball flavour at its finest. Big and loud, the unapologetic design represents a hybrid of style and innovation that made major waves when it debuted—and still turns heads today. This crafted take keeps it simple and easy to style in classic black and white, while pops of blue add a breath of fresh air. Speaking of air, the graffiti-style AIR graphic (an off-court fave) extends down the midsole for extra punch. Visible Nike Air cushioning finishes it off, giving you the edge in comfort.",
     },
   ];
+
   React.useEffect(() => {});
   if (!session) {
-    console.log(session)
-    // signIn()
-    // setTimeout(() => {
-    //   router.push("/login");
-    // }, 500);
-    // redirect('/login');
+    console.log(status);
   }
   return (
     <div id={styles.homepage}>
-      <Grid container spacing={2} rowSpacing={6}>
-        <Grid item xs={12} md={12}>
-          <div className={styles.div1}>
-            <div className={styles.logo}></div>
-            <div className={styles.iconGroup}>
-              <div className={styles.personIcon}></div>
-              <div className={styles.shopingCardIcon}></div>
-            </div>
-          </div>
-        </Grid>
+      <Layout>
         <div className={styles.parent}>
           <Carousel
             style={{
@@ -152,7 +138,14 @@ export default function Home() {
               {product.map((e) => (
                 <Grid item xs={6} md={3} key={e.productId}>
                   <Card>
-                    <CardActionArea>
+                    <CardActionArea
+                      component="div"
+                      onClick={() =>
+                        router.push(
+                          `/detail?productName=${e.productName}&productId=${e.productId}`
+                        )
+                      }
+                    >
                       <img
                         src={e.image}
                         alt={e.image}
@@ -176,13 +169,7 @@ export default function Home() {
             </Grid>
           </div>
         </div>
-
-        <Grid item xs={12} md={12}>
-          <div className={styles.div3}>
-            <p className={styles.footer}>Copyright 2023 Online Shop</p>
-          </div>
-        </Grid>
-      </Grid>
+      </Layout>
     </div>
   );
 }

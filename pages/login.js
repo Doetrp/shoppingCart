@@ -1,5 +1,6 @@
 import React from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { getCsrfToken } from "next-auth/react";
 
 import styles from "@/styles/login.module.css";
 import Grid from "@mui/material/Grid";
@@ -8,7 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 
-export default function Login() {
+export default function Login({ csrfToken }) {
   const { data: session } = useSession();
   const [userName, serUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -24,8 +25,8 @@ export default function Login() {
       password: password === "",
     });
     if (userName !== "" && password !== "") {
-      console.log("success", checkRememberMe);
-      signIn("credentials", { username: userName, password: password });
+      signIn("credentials", { username: userName, password: password, callbackUrl: 'http://localhost:3000/' });
+      console.log("success", session);
       console.log(session);
     }
   };
@@ -91,4 +92,12 @@ export default function Login() {
       </Grid>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  };
 }
