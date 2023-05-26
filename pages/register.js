@@ -1,4 +1,8 @@
 import React from "react";
+import { useRouter } from "next/router";
+
+import User from "./api/user";
+import Cookies from "js-cookie";
 
 import styles from "@/styles/login.module.css";
 import Grid from "@mui/material/Grid";
@@ -8,6 +12,8 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 
 export default function Register() {
+  const router = useRouter();
+
   const [userName, serUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [checkRememberMe, setCheckRememberMe] = React.useState(false);
@@ -15,14 +21,18 @@ export default function Register() {
     userName: false,
     password: false,
   });
-
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setError({
       userName: userName === "",
       password: password === "",
     });
     if (userName !== "" && password !== "" && checkRememberMe !== false) {
-      console.log("success");
+      try {
+        await User.register(userName, password);
+        router.push("/login");
+      } catch (e) {
+        console.log("error", e);
+      }
     } else if (userName === "" || password === "") {
       console.log(
         "fail",
@@ -37,6 +47,7 @@ export default function Register() {
       );
     }
   };
+
   return (
     <div id={styles.register}>
       <Grid container spacing={2} rowSpacing={6}>
@@ -92,7 +103,7 @@ export default function Register() {
                 </Button>
                 <div className={styles.formRemember}>
                   <p>Already have an account?</p>
-                  <a>Log In</a>
+                  <a href="/login">Log In</a>
                 </div>
               </div>
             </Grid>

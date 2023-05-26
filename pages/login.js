@@ -1,6 +1,6 @@
 import React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { getCsrfToken } from "next-auth/react";
+import User from "./api/user";
+import { useRouter } from "next/router";
 
 import styles from "@/styles/login.module.css";
 import Grid from "@mui/material/Grid";
@@ -8,28 +8,49 @@ import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
+import ProTectPath from "@/utils/proTectPath.js";
 
-export default function Login({ csrfToken }) {
-  const { data: session } = useSession();
+export default function Login() {
+  const router = useRouter();
+  const [isLogin, setIslogin] = React.useState(false);
   const [userName, serUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState();
   const [checkRememberMe, setCheckRememberMe] = React.useState(false);
   const [error, setError] = React.useState({
     userName: false,
     password: false,
   });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setError({
       userName: userName === "",
       password: password === "",
     });
     if (userName !== "" && password !== "") {
-      signIn("credentials", { username: userName, password: password, callbackUrl: 'http://localhost:3000/' });
-      console.log("success", session);
-      console.log(session);
+      const check = await User.Login(userName, password);
+      if (check.length > 0) {
+        setErrorMessage("loginFail");
+        setError({
+          userName: userName === "",
+          password: password === "",
+        });
+      } else {
+        router.push("/");
+      }
     }
   };
+  const checkLogin = async () => {
+    const user = await ProTectPath.CheckLogin();
+    setIslogin(user);
+  };
+  
+  React.useEffect(() => {
+    checkLogin();
+    if (isLogin === true) {
+      router.push("/");
+    }
+  }, [isLogin]);
   return (
     <div id={styles.login}>
       <Grid container spacing={2} rowSpacing={6}>
@@ -67,6 +88,9 @@ export default function Login({ csrfToken }) {
                     }
                     label="Remember me"
                   />
+                  {errorMessage && (
+                    <p style={{ color: "red" }}>**{errorMessage}**</p>
+                  )}
                 </div>
                 <Button
                   variant="contained"
@@ -77,7 +101,7 @@ export default function Login({ csrfToken }) {
                 </Button>
                 <div className={styles.formRemember}>
                   <p>Don’t have an account?</p>
-                  <a>Sign Up</a>
+                  <a href="/register">Sign Up</a>
                 </div>
               </div>
             </Grid>
@@ -92,12 +116,4 @@ export default function Login({ csrfToken }) {
       </Grid>
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
-  };
 }

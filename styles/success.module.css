@@ -1,0 +1,39 @@
+#success {
+  .parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 10px;
+    width: 100%;
+    .detail {
+      grid-area: 2 / 3 / 4 / 4;
+      text-align: center;
+
+      .successIcon {
+        background-image: url(../public/icon/task_alt.png);
+        width: 95px;
+        height: 96px;
+      }
+    }
+    .detail p {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 30px;
+    }
+    .detail a {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #success {
+    .detail {
+      grid-area: 2 / 2 / 6 / 5 !important;
+    }
+  }
+}
